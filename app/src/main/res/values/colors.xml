@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffc107</color>
+    <color name="colorPrimaryDark">#ffc107</color>
+    <color name="colorAccent">#448aff</color>
+
+    <color name="crouton_red">#f44336</color>
+    <color name="crouton_blue">#448aff</color>
+</resources>

@@ -1,0 +1,29 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlinVersion = '0.14.+'
+    repositories {
+        jcenter()
+        maven { url 'https://repos.zeroturnaround.com/nexus/content/repositories/zt-public-releases' }  // jrebel
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.4.0-beta3'
+        classpath 'com.zeroturnaround.jrebel.android:jr-android-gradle:0.9.+'
+        //classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'org.jetbrains.kotlin:kotlin-android-extensions:+'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
