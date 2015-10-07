@@ -6,4 +6,5 @@
 
     <color name="crouton_red">#f44336</color>
     <color name="crouton_blue">#448aff</color>
+    <color name="grey1">#444</color>
 </resources>

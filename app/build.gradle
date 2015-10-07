@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.zeroturnaround.jrebel.android'
 apply plugin: 'kotlin-android'
+//apply plugin: 'com.android.databinding'
 
 android {
     compileSdkVersion 23
@@ -52,8 +53,6 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.0.1'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'de.greenrobot:eventbus:3.0.0-beta1'
-    //compile 'ds.gendalf:gendalf:+'
-    //kapt 'ds.gendalf:compiler:+'
     compile 'org.adw.library:discrete-seekbar:1.0.0'
     compile "uy.kohesive.injekt:injekt-core:1.7.+"
 

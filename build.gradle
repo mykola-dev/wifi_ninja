@@ -12,7 +12,9 @@ buildscript {
         //classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'org.jetbrains.kotlin:kotlin-android-extensions:+'
+        //classpath 'org.jetbrains.kotlin:kotlin-android-extensions:+'
+        //classpath 'com.android.databinding:dataBinder:1.0-rc3'
+
     }
 }
 
