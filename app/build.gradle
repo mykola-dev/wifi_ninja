@@ -15,10 +15,23 @@ android {
         versionCode 1
         versionName "0.1"
     }
-    buildTypes {
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            def props = project.properties
+            storeFile = file('../../' + props.storeFile)
+            keyAlias props.keyAlias
+            keyPassword props.keyPassword
+            storePassword props.storePassword
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
         }
     }
 }
