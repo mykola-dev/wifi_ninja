@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.CheckBox
+import android.widget.TextView
 import butterknife.Bind
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -18,8 +19,11 @@ import de.greenrobot.event.Subscribe
 import ds.wifimagicswitcher.App
 import ds.wifimagicswitcher.R
 import ds.wifimagicswitcher.prefs.Prefs
+import ds.wifimagicswitcher.ui.view.ExpandablePanel
 import ds.wifimagicswitcher.utils.crouton
 import ds.wifimagicswitcher.utils.onChange
+import ds.wifimagicswitcher.utils.plus
+import ds.wifimagicswitcher.utils.post
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import uy.kohesive.injekt.injectLazy
 
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
 	@Bind(R.id.min_threshold) lateinit var minThresholdSeekbar: DiscreteSeekBar
 	@Bind(R.id.delta_threshold) lateinit var deltaThresholdSeekbar: DiscreteSeekBar
 	@Bind(R.id.enable_toasts) lateinit var enableToastsCheck: CheckBox
+	@Bind(R.id.expand_panel) lateinit var expandPanel: ExpandablePanel
+	@Bind(R.id.log) lateinit var log: TextView
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -41,8 +47,11 @@ class MainActivity : AppCompatActivity() {
 		ButterKnife.bind(this)
 		setSupportActionBar(toolbar)
 
+	}
+
+	override fun onStart() {
+		super.onStart()
 		initUI()
-		
 	}
 
 	override fun onResume() {
@@ -56,7 +65,6 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun initUI() {
-		updateSpotsList()
 		toggleFab(Prefs.serviceEnabled)
 		supportActionBar.subtitle = "[${wifi.connectionInfo.ssid.drop(1).dropLast(1)}]"
 		minThresholdSeekbar.progress = Prefs.minLevelThreshold
@@ -67,8 +75,9 @@ class MainActivity : AppCompatActivity() {
 		enableToastsCheck.setOnCheckedChangeListener { v, it -> Prefs.toastsEnabled = it }
 	}
 
-	private fun updateSpotsList() {
-		// todo
+
+	private fun addLogMessage(line: String) {
+		log.text += line
 	}
 
 	@OnClick(R.id.fab)
@@ -85,13 +94,18 @@ class MainActivity : AppCompatActivity() {
 
 	@Subscribe
 	fun onWifiResultsEvent(results: List<ScanResult>) {
-		updateSpotsList()
+		addLogMessage("=== Scan Results ===\n")
+		for (r in results) {
+			addLogMessage("[${r.SSID}]: ${WifiManager.calculateSignalLevel(r.level, 100)}%\n")
+		}
+		addLogMessage("\n")
 	}
 
 	@Subscribe
 	fun onBestWifiEvent(result: ScanResult) {
 		crouton("New Best Wifi found!")
 		supportActionBar.subtitle = "[${result.SSID}]"
+		addLogMessage("SWITCHED TO [${result.SSID}]")
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,4 +130,5 @@ class MainActivity : AppCompatActivity() {
 
 		return super.onOptionsItemSelected(item)
 	}
+
 }

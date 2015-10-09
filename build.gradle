@@ -4,7 +4,9 @@ buildscript {
     ext.kotlinVersion = '0.14.+'
     repositories {
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
         maven { url 'https://repos.zeroturnaround.com/nexus/content/repositories/zt-public-releases' }  // jrebel
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.4.0-beta3'
@@ -12,6 +14,7 @@ buildscript {
         //classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'io.fabric.tools:gradle:1.+'
         //classpath 'org.jetbrains.kotlin:kotlin-android-extensions:+'
         //classpath 'com.android.databinding:dataBinder:1.0-rc3'
 
@@ -21,11 +24,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
 
 

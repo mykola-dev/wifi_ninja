@@ -23,15 +23,9 @@
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/min_threshold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:dsb_indicatorColor="?colorAccent"
-        app:dsb_min="10"
+        style="@style/seekbar"
         app:dsb_max="75"
-        app:dsb_progressColor="?colorPrimary"
-        app:dsb_trackColor="?colorAccent"
-
-
+        app:dsb_min="10"
         />
 
     <TextView
@@ -44,23 +38,61 @@
 
     <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
         android:id="@+id/delta_threshold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:dsb_indicatorColor="?colorAccent"
-        app:dsb_min="1"
+        style="@style/seekbar"
         app:dsb_max="50"
-        app:dsb_progressColor="?colorPrimary"
-        app:dsb_trackColor="?colorAccent"
+        app:dsb_min="1"
 
         />
 
-    <CheckBox
-        android:id="@+id/enable_toasts"
+
+    <ds.wifimagicswitcher.ui.view.ExpandablePanel
+        android:id="@+id/expand_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Enable Toasts"
-        android:checked="true"
-        />
+        android:orientation="vertical"
+        app:animationDuration="200"
+        app:content="@+id/ex_content"
+        app:handle="@+id/handle"
+        >
+
+        <TextView
+            android:id="@+id/handle"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:alpha=".5"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:text="Advanced"
+            />
+
+        <LinearLayout
+            android:id="@+id/ex_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <CheckBox
+                android:id="@+id/enable_toasts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Enable Toasts"
+                />
+
+            <TextView
+                android:id="@+id/log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:fontFamily="serif"
+                android:text=""
+                />
+
+        </LinearLayout>
+
+    </ds.wifimagicswitcher.ui.view.ExpandablePanel>
+
 
 </LinearLayout>
