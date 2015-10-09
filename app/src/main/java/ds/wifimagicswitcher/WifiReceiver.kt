@@ -72,5 +72,4 @@ class WifiReceiver : BroadcastReceiver() {
 		return null
 	}
 
-	private fun isConfiguredNetwork(scan: ScanResult): Boolean = wifi.configuredNetworks.any { scan.BSSID == it.BSSID }
 }

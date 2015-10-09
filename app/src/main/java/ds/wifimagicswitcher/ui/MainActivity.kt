@@ -13,17 +13,16 @@ import android.widget.TextView
 import butterknife.Bind
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.jakewharton.rxbinding.view.RxView
 import de.greenrobot.event.EventBus
 import de.greenrobot.event.Subscribe
 import ds.wifimagicswitcher.App
 import ds.wifimagicswitcher.R
 import ds.wifimagicswitcher.prefs.Prefs
+import ds.wifimagicswitcher.prefs.prefsBatch
 import ds.wifimagicswitcher.ui.view.ExpandablePanel
 import ds.wifimagicswitcher.utils.crouton
 import ds.wifimagicswitcher.utils.onChange
 import ds.wifimagicswitcher.utils.plus
-import ds.wifimagicswitcher.utils.post
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import uy.kohesive.injekt.injectLazy
 
@@ -120,10 +119,13 @@ class MainActivity : AppCompatActivity() {
 		when (id) {
 			R.id.force_scan -> wifi.startScan()
 			R.id.recommended -> {
-				Prefs.deltaLevelThreshold = Prefs.DEFAULT_DELTA_TRESH
-				Prefs.minLevelThreshold = Prefs.DEFAULT_MIN_TRESH
-				Prefs.toastsEnabled = true
-				Prefs.serviceEnabled = true
+				prefsBatch {
+					Prefs.deltaLevelThreshold = Prefs.DEFAULT_DELTA_TRESH
+					Prefs.minLevelThreshold = Prefs.DEFAULT_MIN_TRESH
+					Prefs.toastsEnabled = true
+					Prefs.serviceEnabled = true
+				}
+
 				initUI()
 			}
 		}

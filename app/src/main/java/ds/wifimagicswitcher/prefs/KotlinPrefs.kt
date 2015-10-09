@@ -2,29 +2,40 @@ package ds.wifimagicswitcher.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import ds.wifimagicswitcher.utils.T
 import kotlin.properties.ReadWriteProperty
 
 
 object KotlinPrefsSetup {
+	@Volatile var isBatching = false
 	lateinit var prefs: SharedPreferences
+	lateinit var edit: SharedPreferences.Editor
 	/**
 	 * Run it on App start
 	 */
 	fun init(ctx: Context, name: String) {
 		prefs = ctx.getSharedPreferences(name, Context.MODE_PRIVATE)
+		edit=prefs.edit()
 	}
+}
+
+fun prefsBatch(f: () -> Unit) {
+	KotlinPrefsSetup.isBatching = true
+	f()
+	KotlinPrefsSetup.isBatching = false
+	KotlinPrefsSetup.edit.apply()
 }
 
 fun prefsKey<T>(default: T): PrefsDelegate<T> = PrefsDelegate(default)
 
 class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 
-	protected val prefs: SharedPreferences = KotlinPrefsSetup.prefs
 	var value: T = default
 
 	@Suppress("unchecked_cast")
 	override fun get(thisRef: Any?, property: PropertyMetadata): T {
 		val n = property.name
+		val prefs = KotlinPrefsSetup.prefs
 		when (value) {
 			is String -> return prefs.getString(n, default as String) as T
 			is Int -> return prefs.getInt(n, default as Int) as T
@@ -40,16 +51,19 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 	override fun set(thisRef: Any?, property: PropertyMetadata, value: T) {
 		this.value = value
 		val n = property.name
+		val e = KotlinPrefsSetup.edit
 		when (value) {
-			is String -> prefs.edit().putString(n, value).apply()
-			is Int -> prefs.edit().putInt(n, value).apply()
-			is Long -> prefs.edit().putLong(n, value).apply()
-			is Float -> prefs.edit().putFloat(n, value).apply()
-			is Boolean -> prefs.edit().putBoolean(n, value).apply()
-			is Set<*> -> prefs.edit().putStringSet(n, value as Set<String>).apply()
+			is String -> e.putString(n, value)
+			is Int -> e.putInt(n, value)
+			is Long -> e.putLong(n, value)
+			is Float -> e.putFloat(n, value)
+			is Boolean -> e.putBoolean(n, value)
+			is Set<*> -> e.putStringSet(n, value as Set<String>)
 			else -> throw IllegalArgumentException()
 		}
 
+		if (!KotlinPrefsSetup.isBatching)
+			e.apply()
 	}
 
 }
