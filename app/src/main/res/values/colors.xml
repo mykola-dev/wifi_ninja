@@ -6,5 +6,5 @@
 
     <color name="crouton_red">@color/material_red_700</color>
     <color name="crouton_blue">@color/material_blue_A200</color>
-    <color name="grey1">@color/material_grey_800</color>
+    <color name="grey1">#8000</color>
 </resources>

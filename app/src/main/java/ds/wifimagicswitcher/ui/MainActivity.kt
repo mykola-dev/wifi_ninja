@@ -10,9 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.CheckBox
 import android.widget.TextView
-import butterknife.Bind
-import butterknife.ButterKnife
-import butterknife.OnClick
 import de.greenrobot.event.EventBus
 import de.greenrobot.event.Subscribe
 import ds.wifimagicswitcher.App
@@ -23,6 +20,7 @@ import ds.wifimagicswitcher.ui.view.ExpandablePanel
 import ds.wifimagicswitcher.utils.crouton
 import ds.wifimagicswitcher.utils.onChange
 import ds.wifimagicswitcher.utils.plus
+import kotterknife.bindView
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 import uy.kohesive.injekt.injectLazy
 
@@ -32,18 +30,16 @@ class MainActivity : AppCompatActivity() {
 	val bus by injectLazy<EventBus>()
 	val wifi by injectLazy<WifiManager>()
 
-	@Bind(R.id.fab) lateinit var fab: FloatingActionButton
-	@Bind(R.id.toolbar) lateinit var toolbar: Toolbar
-	@Bind(R.id.min_threshold) lateinit var minThresholdSeekbar: DiscreteSeekBar
-	@Bind(R.id.delta_threshold) lateinit var deltaThresholdSeekbar: DiscreteSeekBar
-	@Bind(R.id.enable_toasts) lateinit var enableToastsCheck: CheckBox
-	@Bind(R.id.expand_panel) lateinit var expandPanel: ExpandablePanel
-	@Bind(R.id.log) lateinit var log: TextView
+	val fab: FloatingActionButton by bindView(R.id.fab)
+	val toolbar: Toolbar by bindView(R.id.toolbar)
+	val minThresholdSeekbar: DiscreteSeekBar by bindView(R.id.min_threshold)
+	val deltaThresholdSeekbar: DiscreteSeekBar by bindView(R.id.delta_threshold)
+	val enableToastsCheck: CheckBox by bindView(R.id.enable_toasts)
+	val log: TextView by bindView(R.id.log)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-		ButterKnife.bind(this)
 		setSupportActionBar(toolbar)
 
 	}
@@ -72,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 		minThresholdSeekbar.onChange { Prefs.minLevelThreshold = it }
 		deltaThresholdSeekbar.onChange { Prefs.deltaLevelThreshold = it }
 		enableToastsCheck.setOnCheckedChangeListener { v, it -> Prefs.toastsEnabled = it }
+		fab.setOnClickListener { onFabClick() }
 	}
 
 
@@ -79,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 		log.text += line
 	}
 
-	@OnClick(R.id.fab)
 	fun onFabClick() {
 		val state = !Prefs.serviceEnabled
 		Prefs.serviceEnabled = state

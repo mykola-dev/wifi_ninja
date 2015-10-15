@@ -9,9 +9,27 @@
 
 # Add any project specific keep options here:
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Use unique member names to make stack trace reading easier
+-useuniqueclassmembernames
+
+# rxjava
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+   long producerIndex;
+   long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+   long producerNode;
+   long consumerNode;
+}
+
+#kotlin
+-dontwarn kotlin.dom.**
+
+-keepattributes Signature
+
+#eventbus
+-keepclassmembers class * {
+    @de.greenrobot.event.Subscribe *;
+}
+-keep class de.greenrobot.** {*;}

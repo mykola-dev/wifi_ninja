@@ -15,11 +15,11 @@ object KotlinPrefsSetup {
 	 */
 	fun init(ctx: Context, name: String) {
 		prefs = ctx.getSharedPreferences(name, Context.MODE_PRIVATE)
-		edit=prefs.edit()
+		edit = prefs.edit()
 	}
 }
 
-fun prefsBatch(f: () -> Unit) {
+@Synchronized fun prefsBatch(f: () -> Unit) {
 	KotlinPrefsSetup.isBatching = true
 	f()
 	KotlinPrefsSetup.isBatching = false
