@@ -33,3 +33,12 @@
     @de.greenrobot.event.Subscribe *;
 }
 -keep class de.greenrobot.** {*;}
+
+#icepick
+#-dontwarn icepick.**
+#-keep class **$$Icepick { *; }
+#-keepclasseswithmembernames class * {
+#    @icepick.* <fields>;
+#}
+
+-dontwarn rx.lang.kotlin.**

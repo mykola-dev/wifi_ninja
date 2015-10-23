@@ -3,11 +3,15 @@ package ds.wifimagicswitcher
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.NetworkInfo
 import android.net.wifi.ScanResult
+import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import de.greenrobot.event.EventBus
+import ds.wifimagicswitcher.model.WifiResultEvent
 import ds.wifimagicswitcher.prefs.Prefs
 import ds.wifimagicswitcher.utils.L
+import ds.wifimagicswitcher.utils.T
 import ds.wifimagicswitcher.utils.toast
 import uy.kohesive.injekt.injectLazy
 
@@ -15,11 +19,16 @@ const val MAX_LEVEL: Int = 100
 
 class WifiReceiver : BroadcastReceiver() {
 
+	val DEBUG = false
 
 	val wifi: WifiManager by injectLazy()
 	val bus by injectLazy<EventBus>()
 
 	override fun onReceive(context: Context, intent: Intent) {
+
+		if (DEBUG)
+			T.show(context, "wifi results here!")
+
 		if (!Prefs.serviceEnabled || !wifi.isWifiEnabled)
 			return
 
@@ -34,7 +43,13 @@ class WifiReceiver : BroadcastReceiver() {
 			L.v("$i: SSID=${it.SSID} id=${it.networkId}")
 		}
 
-		bus.post(wifi.scanResults)
+		bus.post(WifiResultEvent(intent.action, wifi.scanResults))
+
+		if (needScan(intent.action)) {
+			wifi.startScan()
+			L.v("extra scan started")
+			return
+		}
 
 		val best = getBetterSpot(context)
 		if (best != null) {
@@ -52,6 +67,13 @@ class WifiReceiver : BroadcastReceiver() {
 			}
 		}
 	}
+
+	private fun needScan(action: String): Boolean {
+		val currLevel = WifiManager.calculateSignalLevel(wifi.connectionInfo.rssi, MAX_LEVEL)
+		return action != WifiManager.SCAN_RESULTS_AVAILABLE_ACTION && !isScanning() && currLevel < Prefs.minLevelThreshold
+	}
+
+	private fun isScanning() = WifiInfo.getDetailedStateOf(wifi.connectionInfo.supplicantState) == NetworkInfo.DetailedState.SCANNING
 
 	private fun getBetterSpot(ctx: Context): ScanResult? {
 		val currSpot = wifi.connectionInfo.ssid

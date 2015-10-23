@@ -3,6 +3,7 @@ package ds.wifimagicswitcher.ui
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -14,6 +15,7 @@ import de.greenrobot.event.EventBus
 import de.greenrobot.event.Subscribe
 import ds.wifimagicswitcher.App
 import ds.wifimagicswitcher.R
+import ds.wifimagicswitcher.model.WifiResultEvent
 import ds.wifimagicswitcher.prefs.Prefs
 import ds.wifimagicswitcher.prefs.prefsBatch
 import ds.wifimagicswitcher.ui.view.ExpandablePanel
@@ -42,7 +44,9 @@ class MainActivity : AppCompatActivity() {
 		setContentView(R.layout.activity_main)
 		setSupportActionBar(toolbar)
 
+
 	}
+
 
 	override fun onStart() {
 		super.onStart()
@@ -73,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
 
 	private fun addLogMessage(line: String) {
-		log.text += line
+		log.text += line+"\n"
 	}
 
 	fun onFabClick() {
@@ -88,12 +92,12 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	@Subscribe
-	fun onWifiResultsEvent(results: List<ScanResult>) {
-		addLogMessage("=== Scan Results ===\n")
-		for (r in results) {
-			addLogMessage("[${r.SSID}]: ${WifiManager.calculateSignalLevel(r.level, 100)}%\n")
+	fun onWifiResultsEvent(e: WifiResultEvent) {
+		addLogMessage(e.action)
+		for (r in e.results) {
+			addLogMessage("[${r.SSID}]: ${WifiManager.calculateSignalLevel(r.level, 100)}%")
 		}
-		addLogMessage("\n")
+		addLogMessage("==============================")
 	}
 
 	@Subscribe

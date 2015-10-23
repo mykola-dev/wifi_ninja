@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import ds.wifimagicswitcher.utils.T
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 
 object KotlinPrefsSetup {
@@ -26,14 +27,13 @@ object KotlinPrefsSetup {
 	KotlinPrefsSetup.edit.apply()
 }
 
-fun prefsKey<T>(default: T): PrefsDelegate<T> = PrefsDelegate(default)
+fun <T> prefsKey(default: T): PrefsDelegate<T> = PrefsDelegate(default)
 
 class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
-
 	var value: T = default
 
 	@Suppress("unchecked_cast")
-	override fun get(thisRef: Any?, property: PropertyMetadata): T {
+	override fun getValue(thisRef: Any?, property: KProperty<*>): T {
 		val n = property.name
 		val prefs = KotlinPrefsSetup.prefs
 		when (value) {
@@ -48,7 +48,10 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 	}
 
 	@Suppress("unchecked_cast")
-	override fun set(thisRef: Any?, property: PropertyMetadata, value: T) {
+	override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+		if (this.value == value)    // optimization
+			return
+
 		this.value = value
 		val n = property.name
 		val e = KotlinPrefsSetup.edit
@@ -65,6 +68,7 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 		if (!KotlinPrefsSetup.isBatching)
 			e.apply()
 	}
+
 
 }
 
