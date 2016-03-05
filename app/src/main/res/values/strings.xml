@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Wi-Fi Ninja</string>
+    <string name="min_level_threshold">Min Level Threshold</string>
+    <string name="delta_level_threshold">Delta Level Threshold</string>
+    <string name="enable_toasts">Enable Toasts</string>
 </resources>

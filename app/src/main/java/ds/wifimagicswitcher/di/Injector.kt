@@ -2,8 +2,8 @@ package ds.wifimagicswitcher.di
 
 import android.content.Context
 import android.net.wifi.WifiManager
-import de.greenrobot.event.EventBus
 import ds.wifimagicswitcher.App
+import org.greenrobot.eventbus.EventBus
 import uy.kohesive.injekt.InjektMain
 import uy.kohesive.injekt.api.InjektRegistrar
 import uy.kohesive.injekt.api.addSingleton
