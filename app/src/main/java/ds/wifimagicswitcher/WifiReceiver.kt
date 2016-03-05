@@ -10,7 +10,6 @@ import android.net.wifi.WifiManager
 import ds.wifimagicswitcher.model.WifiResultEvent
 import ds.wifimagicswitcher.prefs.Prefs
 import ds.wifimagicswitcher.utils.L
-import ds.wifimagicswitcher.utils.T
 import ds.wifimagicswitcher.utils.toast
 import org.greenrobot.eventbus.EventBus
 import uy.kohesive.injekt.injectLazy
@@ -19,15 +18,10 @@ const val MAX_LEVEL: Int = 100
 
 class WifiReceiver : BroadcastReceiver() {
 
-	val DEBUG = false
-
 	val wifi: WifiManager by injectLazy()
 	val bus by injectLazy<EventBus>()
 
 	override fun onReceive(context: Context, intent: Intent) {
-
-		if (DEBUG)
-			T.show(context, "wifi results here!")
 
 		if (!Prefs.serviceEnabled || !wifi.isWifiEnabled || wifi.scanResults == null || wifi.configuredNetworks == null)
 			return
