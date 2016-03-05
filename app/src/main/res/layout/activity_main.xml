@@ -1,157 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     >
 
-    <data class="MainActivityBinding">
-
-        <variable
-            name="vm"
-            type="ds.wifimagicswitcher.viewmodel.MainViewModel"
-            />
-    </data>
-
-    <android.support.design.widget.CoordinatorLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+
         >
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
-
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:showIn="@layout/activity_main"
             >
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:subtitle="@{vm.toolbarSubtitle}"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/min_level_threshold"
                 />
-        </android.support.design.widget.AppBarLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/min_threshold"
+                style="@style/seekbar"
+                app:dsb_max="75"
+                app:dsb_min="10"
+                />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/delta_level_threshold"
+                />
+
+            <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                android:id="@+id/delta_threshold"
+                style="@style/seekbar"
+                app:dsb_max="50"
+                app:dsb_min="1"
+                />
+
+
+            <ds.wifimagicswitcher.ui.view.ExpandablePanel
+                android:id="@+id/expand_panel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                tools:showIn="@layout/activity_main"
+                app:animationDuration="200"
+                app:content="@+id/ex_content"
+                app:handle="@+id/handle"
                 >
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/min_level_threshold"
+                    android:id="@+id/handle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:alpha=".5"
+                    android:background="?selectableItemBackground"
+                    android:gravity="center"
+                    android:text="Advanced"
                     />
 
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/min_threshold"
-                    style="@style/seekbar"
-                    app:dsb_max="75"
-                    app:dsb_min="10"
-                    bind:progress="@{vm.minThreshold}"
-                    bind:onChange="@{vm.onMinThresholdChange}"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="@string/delta_level_threshold"
-                    />
-
-                <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                    android:id="@+id/delta_threshold"
-                    style="@style/seekbar"
-                    app:dsb_max="50"
-                    app:dsb_min="1"
-                    bind:progress="@{vm.deltaThreshold}"
-                    />
-
-
-                <ds.wifimagicswitcher.ui.view.ExpandablePanel
-                    android:id="@+id/expand_panel"
+                <LinearLayout
+                    android:id="@+id/ex_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
                     android:orientation="vertical"
-                    app:animationDuration="200"
-                    app:content="@+id/ex_content"
-                    app:handle="@+id/handle"
                     >
 
-                    <TextView
-                        android:id="@+id/handle"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:alpha=".5"
-                        android:background="?selectableItemBackground"
-                        android:gravity="center"
-                        android:text="Advanced"
-                        />
-
-                    <LinearLayout
-                        android:id="@+id/ex_content"
+                    <CheckBox
+                        android:id="@+id/enable_toasts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        >
+                        android:text="@string/enable_toasts"
+                        />
 
-                        <CheckBox
-                            android:id="@+id/enable_toasts"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:checked="@{vm.enableToasts}"
-                            android:text="@string/enable_toasts"
-                            bind:onCheckedChangeListener="@{vm.onCheckedEnableToasts}"
-                            />
+                    <TextView
+                        android:id="@+id/log"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:fontFamily="serif"
+                        />
 
-                        <TextView
-                            android:id="@+id/log"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
-                            android:fontFamily="serif"
-                            android:text="@{vm.log}"
-                            />
+                </LinearLayout>
 
-                    </LinearLayout>
-
-                </ds.wifimagicswitcher.ui.view.ExpandablePanel>
+            </ds.wifimagicswitcher.ui.view.ExpandablePanel>
 
 
-            </LinearLayout>
+        </LinearLayout>
 
-        </ScrollView>
+    </ScrollView>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{vm.onFabClick}"
-            android:src="@drawable/ic_wifi_off"
-            />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_wifi_off"
+        />
 
-    </android.support.design.widget.CoordinatorLayout>
-</layout>
+</android.support.design.widget.CoordinatorLayout>

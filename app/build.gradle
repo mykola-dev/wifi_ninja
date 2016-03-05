@@ -45,13 +45,13 @@ android {
     }
 
     dataBinding {
-        enabled = true;
+        enabled = false;
     }
 
 }
 
 kapt {
-    generateStubs = true
+    generateStubs = false
 }
 
 
@@ -70,8 +70,8 @@ dependencies {
     //kapt 'de.greenrobot:eventbus-annotation-processor:3.0.0-beta1'
     compile 'org.adw.library:discrete-seekbar:1.0.0'
     compile "uy.kohesive.injekt:injekt-core:1.14.1"
-    compile 'cz.kinst.jakub:viewmodelbinding:0.8.2'
-    kapt 'com.android.databinding:compiler:1.0-rc5'
+    //compile 'cz.kinst.jakub:viewmodelbinding:0.8.2'
+    //kapt 'com.android.databinding:compiler:1.0-rc5'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }

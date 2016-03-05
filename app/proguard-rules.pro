@@ -30,15 +30,8 @@
 
 #eventbus
 -keepclassmembers class * {
-    @de.greenrobot.event.Subscribe *;
+    @org.greenrobot.eventbus.Subscribe *;
 }
--keep class de.greenrobot.** {*;}
-
-#icepick
-#-dontwarn icepick.**
-#-keep class **$$Icepick { *; }
-#-keepclasseswithmembernames class * {
-#    @icepick.* <fields>;
-#}
+-keep class org.greenrobot.** {*;}
 
 -dontwarn rx.lang.kotlin.**
