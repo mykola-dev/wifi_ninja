@@ -6,8 +6,8 @@ import android.view.MenuItem
 import cz.kinst.jakub.viewmodelbinding.ViewModelActivity
 import cz.kinst.jakub.viewmodelbinding.ViewModelBindingConfig
 import ds.wifimagicswitcher.R
+import ds.wifimagicswitcher.bindings.viewmodel.MainViewModel
 import ds.wifimagicswitcher.databinding.MainActivityBinding
-import ds.wifimagicswitcher.viewmodel.MainViewModel
 
 class MainActivity : ViewModelActivity<MainActivityBinding, MainViewModel>() {
 
@@ -28,13 +28,10 @@ class MainActivity : ViewModelActivity<MainActivityBinding, MainViewModel>() {
 
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		val id = item.itemId
-
-		when (id) {
+		when (item.itemId) {
 			R.id.force_scan -> viewModel.startScan()
 			R.id.recommended -> viewModel.onRecommendedSettings()
 		}
-
 		return super.onOptionsItemSelected(item)
 	}
 

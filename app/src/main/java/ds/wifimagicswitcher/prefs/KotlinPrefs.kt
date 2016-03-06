@@ -2,12 +2,11 @@ package ds.wifimagicswitcher.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
-import ds.wifimagicswitcher.utils.T
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
-object KotlinPrefsSetup {
+object KotlinPrefsManager {
 	@Volatile var isBatching = false
 	lateinit var prefs: SharedPreferences
 	lateinit var edit: SharedPreferences.Editor
@@ -21,10 +20,10 @@ object KotlinPrefsSetup {
 }
 
 @Synchronized fun prefsBatch(f: () -> Unit) {
-	KotlinPrefsSetup.isBatching = true
+	KotlinPrefsManager.isBatching = true
 	f()
-	KotlinPrefsSetup.isBatching = false
-	KotlinPrefsSetup.edit.apply()
+	KotlinPrefsManager.isBatching = false
+	KotlinPrefsManager.edit.apply()
 }
 
 fun <T> prefsKey(default: T): PrefsDelegate<T> = PrefsDelegate(default)
@@ -35,7 +34,7 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 	@Suppress("unchecked_cast")
 	override fun getValue(thisRef: Any?, property: KProperty<*>): T {
 		val n = property.name
-		val prefs = KotlinPrefsSetup.prefs
+		val prefs = KotlinPrefsManager.prefs
 		when (value) {
 			is String -> return prefs.getString(n, default as String) as T
 			is Int -> return prefs.getInt(n, default as Int) as T
@@ -54,7 +53,7 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 
 		this.value = value
 		val n = property.name
-		val e = KotlinPrefsSetup.edit
+		val e = KotlinPrefsManager.edit
 		when (value) {
 			is String -> e.putString(n, value)
 			is Int -> e.putInt(n, value)
@@ -65,7 +64,7 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 			else -> throw IllegalArgumentException()
 		}
 
-		if (!KotlinPrefsSetup.isBatching)
+		if (!KotlinPrefsManager.isBatching)
 			e.apply()
 	}
 

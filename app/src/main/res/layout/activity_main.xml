@@ -8,8 +8,8 @@
     <data class="MainActivityBinding">
 
         <variable
-            name="vm"
-            type="ds.wifimagicswitcher.viewmodel.MainViewModel"
+            name="viewModel"
+            type="ds.wifimagicswitcher.bindings.viewmodel.MainViewModel"
             />
     </data>
 
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                android:subtitle="@{vm.toolbarSubtitle}"
+                android:subtitle="@{viewModel.toolbarSubtitle}"
                 />
         </android.support.design.widget.AppBarLayout>
 
@@ -67,8 +67,8 @@
                     style="@style/seekbar"
                     app:dsb_max="75"
                     app:dsb_min="10"
-                    bind:progress="@{vm.minThreshold}"
-                    bind:onChange="@{vm.onMinThresholdChange}"
+                    bind:progress="@{viewModel.minThreshold}"
+                    bind:onChange="@{viewModel.onMinThresholdChange}"
                     />
 
                 <TextView
@@ -84,7 +84,8 @@
                     style="@style/seekbar"
                     app:dsb_max="50"
                     app:dsb_min="1"
-                    bind:progress="@{vm.deltaThreshold}"
+                    bind:progress="@{viewModel.deltaThreshold}"
+                    bind:onChange="@{viewModel.onDeltaThresholdChange}"
                     />
 
 
@@ -120,9 +121,9 @@
                             android:id="@+id/enable_toasts"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:checked="@{vm.enableToasts}"
+                            android:checked="@{viewModel.enableToasts}"
                             android:text="@string/enable_toasts"
-                            bind:onCheckedChangeListener="@{vm.onCheckedEnableToasts}"
+                            bind:onCheckedChangeListener="@{viewModel.onCheckedEnableToasts}"
                             />
 
                         <TextView
@@ -131,7 +132,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/activity_vertical_margin"
                             android:fontFamily="serif"
-                            android:text="@{vm.log}"
+                            android:text="@{viewModel.log}"
                             />
 
                     </LinearLayout>
@@ -149,8 +150,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:onClick="@{vm.onFabClick}"
-            android:src="@drawable/ic_wifi_off"
+            android:onClick="@{viewModel.onFabClick}"
+            bind:checked="@{viewModel.fabEnabled}"
             />
 
     </android.support.design.widget.CoordinatorLayout>
