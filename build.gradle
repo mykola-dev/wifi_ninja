@@ -1,14 +1,15 @@
 buildscript {
-    ext.kotlinVersion = '1.0.0'
+    ext.kotlinVersion = '1.0.1'
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.0.0-beta6'
-        //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.android.tools.build:gradle:2.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'org.moallemi.gradle.advanced-build-version:gradle-plugin:1.5.3'
+        //classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         //classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
 
     }
@@ -18,6 +19,7 @@ allprojects {
     repositories {
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
     }
 }
 

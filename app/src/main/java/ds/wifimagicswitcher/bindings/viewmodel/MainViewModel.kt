@@ -105,3 +105,4 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 	}
 
 }
+

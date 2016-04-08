@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import cz.kinst.jakub.viewmodelbinding.ViewModelActivity
-import cz.kinst.jakub.viewmodelbinding.ViewModelBindingConfig
 import ds.wifimagicswitcher.R
 import ds.wifimagicswitcher.bindings.viewmodel.MainViewModel
 import ds.wifimagicswitcher.databinding.MainActivityBinding
 
 class MainActivity : ViewModelActivity<MainActivityBinding, MainViewModel>() {
 
-	override fun getViewModelBindingConfig(): ViewModelBindingConfig? {
-		return ViewModelBindingConfig(R.layout.activity_main, MainViewModel::class.java)
-	}
+	override fun getLayoutResourceId(): Int = R.layout.activity_main
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
