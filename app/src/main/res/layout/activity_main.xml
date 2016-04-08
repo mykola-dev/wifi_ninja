@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data class="MainActivityBinding">
@@ -67,8 +67,8 @@
                     style="@style/seekbar"
                     app:dsb_max="75"
                     app:dsb_min="10"
-                    bind:progress="@{viewModel.minThreshold}"
                     bind:onChange="@{viewModel.onMinThresholdChange}"
+                    bind:progress="@{viewModel.minThreshold}"
                     />
 
                 <TextView
@@ -84,8 +84,8 @@
                     style="@style/seekbar"
                     app:dsb_max="50"
                     app:dsb_min="1"
-                    bind:progress="@{viewModel.deltaThreshold}"
                     bind:onChange="@{viewModel.onDeltaThresholdChange}"
+                    bind:progress="@{viewModel.deltaThreshold}"
                     />
 
 
@@ -139,10 +139,21 @@
 
                 </ds.wifimagicswitcher.ui.view.ExpandablePanel>
 
-
             </LinearLayout>
 
         </ScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            tools:text="ver"
+            android:layout_margin="4dp"
+            android:alpha=".5"
+            android:textSize="10sp"
+            android:text="@{viewModel.version}"
+
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

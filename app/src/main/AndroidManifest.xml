@@ -37,12 +37,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".StartupReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="1f312301efd5023083b15d340b8963cbf0c8ad14"

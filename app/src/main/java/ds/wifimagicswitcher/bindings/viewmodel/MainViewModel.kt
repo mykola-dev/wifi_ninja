@@ -4,6 +4,8 @@ import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.view.View
 import cz.kinst.jakub.viewmodelbinding.ViewModel
+import ds.wifimagicswitcher.BuildConfig
+import ds.wifimagicswitcher.bindings.ObservableDelegate
 import ds.wifimagicswitcher.databinding.MainActivityBinding
 import ds.wifimagicswitcher.model.WifiResultEvent
 import ds.wifimagicswitcher.prefs.Prefs
@@ -15,12 +17,13 @@ import uy.kohesive.injekt.injectLazy
 
 class MainViewModel : ViewModel<MainActivityBinding>() {
 
-	var toolbarSubtitle: String? = null
-	var log: String? = null
-	var minThreshold = 0
-	var deltaThreshold = 0
-	var enableToasts = false
-	var fabEnabled = false
+	var toolbarSubtitle by ObservableDelegate<String>()
+	var log by ObservableDelegate<String>()
+	var version by ObservableDelegate<String>()
+	var minThreshold  by ObservableDelegate(0)
+	var deltaThreshold by ObservableDelegate(0)
+	var enableToasts by ObservableDelegate(false)
+	var fabEnabled by ObservableDelegate(false)
 
 	val bus by injectLazy<EventBus>()
 	val wifi by injectLazy<WifiManager>()
@@ -46,7 +49,9 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 		minThreshold = Prefs.minLevelThreshold
 		deltaThreshold = Prefs.deltaLevelThreshold
 		enableToasts = Prefs.toastsEnabled
-		notifyChange()
+		//notifyChange()
+		//version.set("ver:${BuildConfig.VERSION_NAME}")
+		version = "ver:${BuildConfig.VERSION_NAME}"
 	}
 
 	fun onMinThresholdChange(value: Int) {
@@ -64,9 +69,9 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 
 	fun onFabClick(v: View) {
 		fabEnabled = !Prefs.serviceEnabled
-		Prefs.serviceEnabled = fabEnabled
+		Prefs.serviceEnabled = fabEnabled!!
 		notifyChange()
-		activity.crouton(if (fabEnabled) "Service Enabled" else "Service Disabled")
+		activity.crouton(if (fabEnabled!!) "Service Enabled" else "Service Disabled")
 	}
 
 	@Subscribe

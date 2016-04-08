@@ -3,6 +3,21 @@ apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 apply plugin: 'org.moallemi.advanced-build-version'
 
+advancedVersioning {
+    nameOptions {
+        versionMajor 0
+        versionMinor 5
+    }
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_ONE_STEP
+        dependsOnTasks 'release'
+    }
+    outputOptions {
+        renameOutput true
+        nameFormat '${appName}-${buildType}-${versionName}'
+    }
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -48,21 +63,6 @@ android {
         enabled = true;
     }
 
-}
-
-advancedVersioning {
-    nameOptions {
-        versionMajor 0
-        versionMinor 5
-    }
-    codeOptions {
-        versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_ONE_STEP
-        dependsOnTasks 'release'
-    }
-    outputOptions {
-        renameOutput true
-        nameFormat '${appName}-${buildType}-${versionName}'
-    }
 }
 
 kapt {
