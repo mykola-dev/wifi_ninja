@@ -1,9 +1,8 @@
 package ds.wifimagicswitcher.bindings
 
 import android.databinding.BindingAdapter
-import android.support.design.widget.FloatingActionButton
+import android.widget.ImageView
 import ds.wifimagicswitcher.R
-
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
 
 object BindingAdapters {
@@ -33,8 +32,8 @@ object BindingAdapters {
 		fun onChangeProgress(progress: Int)
 	}
 
-	@BindingAdapter("checked")
-	@JvmStatic fun setChecked(view: FloatingActionButton, checked: Boolean) {
+	@BindingAdapter("check")
+	@JvmStatic fun setChecked(view: ImageView, checked: Boolean) {
 		view.setImageResource(if (checked) R.drawable.ic_wifi_on else R.drawable.ic_wifi_off)
 	}
 }

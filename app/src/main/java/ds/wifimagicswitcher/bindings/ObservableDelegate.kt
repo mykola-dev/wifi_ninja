@@ -1,29 +1,23 @@
 package ds.wifimagicswitcher.bindings
 
-import android.databinding.BaseObservable
+import android.databinding.ObservableField
 import java.io.Serializable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-fun <T> observable(): ObservableDelegate<T> = ObservableDelegate()
+fun <T> observable(v: T? = null): ObservableDelegate<T> = ObservableDelegate(v)
 
-class ObservableDelegate<T>() : BaseObservable(), Serializable, ReadWriteProperty<Any, T?> {
+class ObservableDelegate<T>() : ObservableField<T>(), Serializable, ReadWriteProperty<Any, T?> {
 
-	private var value: T? = null
+	var value: T? = null
 
-	constructor(value: T) : this() {
-		this.value = value
+	constructor(value: T?) : this() {
+		set(value)
 	}
 
-	override fun getValue(thisRef: Any, property: KProperty<*>): T? = value
+	override fun getValue(thisRef: Any, property: KProperty<*>): T? = get()
 
 	override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-		this.value = value
-		notifyChange()
-	}
-
-
-	companion object {
-		internal val serialVersionUID = 1L
+		set(value)
 	}
 }

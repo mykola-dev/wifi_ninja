@@ -162,7 +162,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{viewModel.onFabClick}"
-            bind:checked="@{viewModel.fabEnabled}"
+            bind:check="@{viewModel.fabEnabled}"
             />
 
     </android.support.design.widget.CoordinatorLayout>

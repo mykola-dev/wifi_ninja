@@ -1,11 +1,11 @@
 package ds.wifimagicswitcher.bindings.viewmodel
 
+import android.databinding.ObservableField
 import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.view.View
 import cz.kinst.jakub.viewmodelbinding.ViewModel
 import ds.wifimagicswitcher.BuildConfig
-import ds.wifimagicswitcher.bindings.ObservableDelegate
 import ds.wifimagicswitcher.databinding.MainActivityBinding
 import ds.wifimagicswitcher.model.WifiResultEvent
 import ds.wifimagicswitcher.prefs.Prefs
@@ -13,17 +13,18 @@ import ds.wifimagicswitcher.prefs.prefsBatch
 import ds.wifimagicswitcher.utils.crouton
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import uy.kohesive.injekt.injectLazy
 
 class MainViewModel : ViewModel<MainActivityBinding>() {
 
-	var toolbarSubtitle by ObservableDelegate<String>()
-	var log by ObservableDelegate<String>()
-	var version by ObservableDelegate<String>()
-	var minThreshold  by ObservableDelegate(0)
-	var deltaThreshold by ObservableDelegate(0)
-	var enableToasts by ObservableDelegate(false)
-	var fabEnabled by ObservableDelegate(false)
+	var toolbarSubtitle = ObservableField<String>()
+	var log = ObservableField("")
+	var version = ObservableField<String>()
+	var minThreshold = ObservableField(0)
+	var deltaThreshold = ObservableField(0)
+	var enableToasts = ObservableField(false)
+	var fabEnabled = ObservableField(false)
 
 	val bus by injectLazy<EventBus>()
 	val wifi by injectLazy<WifiManager>()
@@ -44,14 +45,12 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 	}
 
 	fun initUI() {
-		fabEnabled = Prefs.serviceEnabled
-		toolbarSubtitle = "[${wifi.connectionInfo.ssid.drop(1).dropLast(1)}]"
-		minThreshold = Prefs.minLevelThreshold
-		deltaThreshold = Prefs.deltaLevelThreshold
-		enableToasts = Prefs.toastsEnabled
-		//notifyChange()
-		//version.set("ver:${BuildConfig.VERSION_NAME}")
-		version = "ver:${BuildConfig.VERSION_NAME}"
+		fabEnabled.set(Prefs.serviceEnabled)
+		toolbarSubtitle.set("[${wifi.connectionInfo.ssid.drop(1).dropLast(1)}]")
+		minThreshold.set(Prefs.minLevelThreshold)
+		deltaThreshold.set(Prefs.deltaLevelThreshold)
+		enableToasts.set(Prefs.toastsEnabled)
+		version.set("ver:${BuildConfig.VERSION_NAME}")
 	}
 
 	fun onMinThresholdChange(value: Int) {
@@ -68,13 +67,14 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 	}
 
 	fun onFabClick(v: View) {
-		fabEnabled = !Prefs.serviceEnabled
-		Prefs.serviceEnabled = fabEnabled!!
-		notifyChange()
-		activity.crouton(if (fabEnabled!!) "Service Enabled" else "Service Disabled")
+		val new = !Prefs.serviceEnabled
+		Prefs.serviceEnabled = new
+		fabEnabled.set(new)
+		//notifyChange()
+		activity.crouton(if (new) "Service Enabled" else "Service Disabled")
 	}
 
-	@Subscribe
+	@Subscribe(threadMode = ThreadMode.MAIN)
 	fun onWifiResultsEvent(e: WifiResultEvent) {
 		addLogMessage(e.action)
 		for (r in e.results) {
@@ -83,10 +83,10 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 		addLogMessage("==============================")
 	}
 
-	@Subscribe
+	@Subscribe(threadMode = ThreadMode.MAIN)
 	fun onBestWifiEvent(result: ScanResult) {
 		activity.crouton("New Best Wifi found!")
-		toolbarSubtitle = "[${result.SSID}]"
+		toolbarSubtitle.set("[${result.SSID}]")
 		addLogMessage("SWITCHED TO [${result.SSID}]")
 	}
 
@@ -106,7 +106,7 @@ class MainViewModel : ViewModel<MainActivityBinding>() {
 	}
 
 	private fun addLogMessage(line: String) {
-		log = "$log$line\n"
+		log.set("${log.get()}$line\n")
 	}
 
 }

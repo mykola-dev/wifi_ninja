@@ -48,8 +48,6 @@ class PrefsDelegate<T>(val default: T) : ReadWriteProperty<Any?, T> {
 
 	@Suppress("unchecked_cast")
 	override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
-		if (this.value == value)    // optimization
-			return
 
 		this.value = value
 		val n = property.name

@@ -52,13 +52,6 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File("d:/dev/wifi_ninja",
-                    "wifi-ninja${defaultConfig.versionName}-${variant.buildType.name}.apk")
-        }
-    }
-
     dataBinding {
         enabled = true;
     }
